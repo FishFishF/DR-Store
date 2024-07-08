@@ -12,7 +12,7 @@ n=$1
 # 起始端口号
 start_port=$2
 
-IMAGE_NAME="waterbear-jzh"
+IMAGE_NAME="DR-Store"
 IMAGE_TAG="1.1"
 
 # docker stop $(docker ps -a | grep "$IMAGE_NAME:$IMAGE_TAG" | awk '{print $1}')
@@ -37,8 +37,8 @@ do
   echo "运行第 $i 个容器实例..."
   docker run --cpus=2 --cpuset-cpus="$cpu1,$cpu2" --memory=2g --rm -itd \
       --name $IMAGE_NAME-0$i --net=container:bft-experiment-5 \
-      -v /opt/bft/waterbear/logs/:/home/fin/var \
-      $IMAGE_NAME:$IMAGE_TAG /bin/bash -c "./bin/server $i > /home/waterbear/var/replica$i.out 2>&1" 
+      -v /opt/bft/DR-Store/logs/:/home/fin/var \
+      $IMAGE_NAME:$IMAGE_TAG /bin/bash -c "./bin/server $i > /home/DR-Store/var/replica$i.out 2>&1" 
   echo $IMAGE_NAME-$i
   echo "第 $i 个容器实例成功运行！"
 done
@@ -49,10 +49,10 @@ sleep 3
 echo "运行额外的容器实例client..."
 docker run --cpus=2 --memory=2g --rm -itd \
     --name $IMAGE_NAME-0client --net=container:bft-experiment-5 \
-    -v /opt/bft/waterbear/logs/:/home/waterbear/var \
-    $IMAGE_NAME:$IMAGE_TAG /bin/bash -c "./bin/client 100 1 25000 a > /home/waterbear/var/client.out 2>&1"
+    -v /opt/bft/DR-Store/logs/:/home/DR-Store/var \
+    $IMAGE_NAME:$IMAGE_TAG /bin/bash -c "./bin/client 100 1 25000 a > /home/DR-Store/var/client.out 2>&1"
 echo "client器实例成功运行！"
-#docker stop $(docker ps -a | grep waterbear:1.1 | awk '{print $1}' )
+#docker stop $(docker ps -a | grep DR-Store:1.1 | awk '{print $1}' )
 #tc qdisc del dev eth0 root
 #tc qdisc show dev eth0
 
